@@ -1,27 +1,6 @@
 (ns ksp-35-z-4-1.core
   (:require [clojure.string :as str]))
 
-(declare solve-file solve solve-lights)
-
-(defn solve-file [input output]
-  (time (->> (slurp input)
-             (solve)
-             (#(str % "\n"))
-             (spit output))))
-
-(defn solve [lights]
-  (->> lights
-       (str/trim)
-       (mapv #(if (= % \X)
-                :broken
-                :off))
-       (solve-lights)
-       (map #(case %
-               :on \O
-               :off \-
-               :broken \X))
-       (reduce str)))
-
 (defn solve-lights [lights]
   (-> lights
       (assoc 0 :on)
@@ -38,3 +17,22 @@
                                  lights))
                              (transient %)
                              (range 1 (dec (count %))))))))
+
+(defn solve [lights]
+  (->> lights
+       (str/trim)
+       (mapv #(if (= % \X)
+                :broken
+                :off))
+       (solve-lights)
+       (map #(case %
+               :on \O
+               :off \-
+               :broken \X))
+       (reduce str)))
+
+(defn solve-file [input output]
+  (time (->> (slurp input)
+             (solve)
+             (#(str % "\n"))
+             (spit output))))
