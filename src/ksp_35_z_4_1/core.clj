@@ -1,8 +1,7 @@
 (ns ksp-35-z-4-1.core
   (:require [clojure.string :as str]))
 
-(def solve nil)
-(def solve-lights nil)
+(declare solve-file solve solve-lights)
 
 (defn solve-file [input output]
   (time (->> (slurp input)
